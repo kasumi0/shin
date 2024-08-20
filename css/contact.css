@@ -1,0 +1,455 @@
+@import url(lower.css);
+
+.hero {
+  padding-bottom: 0;
+  img {
+    opacity: 0.9;
+  }
+}
+:root {
+  --red-c: #ff7474;
+  --f-sz: 14px;
+  --pos: -0.6rem auto auto 1.4em;
+  --shadow: 0 10px 30px -2px #777;
+}
+.container {
+  display: flex;
+  gap: 1em;
+  padding: 0 5vw max(8vw, 3rem);
+}
+.progress {
+  display: flex;
+  gap: 1em;
+  flex-direction: column;
+  order: 1;
+  width: calc(var(--f-sz) * 4 + 5vw - 1em);
+  height: fit-content;
+  position: sticky;
+  top: calc(50vh - 1.5em * 1.4 - 1em);
+  counter-reset: num 0;
+}
+.progress li {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: #666;
+  counter-increment: num 1;
+}
+.progress li::after {
+  position: absolute;
+  content: "";
+  inset: 0 0 0 auto;
+  width: 3px;
+  background-color: #666;
+}
+.progress li.done {
+  color: #fff;
+  &::after {
+    background-color: #fff;
+  }
+}
+.progress li::before {
+  content: counter(num) " .";
+  width: 1.6em;
+}
+
+form {
+  flex: 1;
+}
+.input-area {
+  display: flex;
+  gap: 5vw;
+  margin-inline: auto;
+  width: min(100%, 600px);
+  transform-style: preserve-3d;
+  perspective: 100vmax;
+  ~ .input-area {
+    margin-top: 2.6em;
+  }
+}
+.label {
+  position: relative;
+  flex: 1;
+}
+.required {
+  background-color: #333;
+  align-self: start;
+  border-radius: 6px;
+  font-size: var(--f-sz);
+  padding: 0.3em 1em;
+  margin-top: 0.7rem;
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 100vmax;
+  transition: rotate 1s;
+  &::before {
+    position: absolute;
+    content: attr(data-validated);
+    inset: 0;
+    padding: 0.3em 1em;
+    border-radius: 6px;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid;
+    rotate: 0 1 0 180deg;
+    translate: 0 0 -1px;
+  }
+}
+.input-area:has(.is-ok) .required {
+  rotate: 0 1 0 180deg;
+}
+.input-area:has(.agree) .required {
+  margin-top: 0.1em;
+}
+input:not([type="submit"]),
+select,
+textarea {
+  font-size: 16px;
+  border: 1px solid #fff;
+  padding: 0.8em 1.4em;
+  border-radius: 1.6em;
+  outline: 2px solid transparent;
+  outline-offset: -1px;
+  width: 100%;
+  color: #fff !important;
+}
+.label span {
+  font-size: 16px;
+  position: absolute;
+  inset: 0.9em auto auto 1em;
+  pointer-events: none;
+  background-color: #000;
+  padding-inline: 0.5em;
+  transition-property: font-size, inset;
+  transition-duration: 0.4s;
+}
+input:not([type="submit"]):focus,
+select:focus,
+textarea:focus {
+  outline-color: var(--point-c);
+  border-color: transparent;
+}
+.is-error:not([type="submit"]) {
+  outline-color: var(--red-c);
+  border-color: transparent;
+}
+input:not([type="submit"]):focus + span,
+input:not([type="submit"]):not(:placeholder-shown) + span,
+textarea:focus + span,
+textarea:not(:placeholder-shown) + span,
+.label select + span {
+  font-size: 0.8em;
+  inset: var(--pos);
+}
+:-webkit-autofill {
+  transition: background-color 10000s ease-in;
+  -webkit-text-fill-color: #fff !important;
+}
+legend {
+  margin-bottom: 1em;
+}
+legend .required {
+  padding-left: 0.4em;
+}
+.select-box::before {
+  position: absolute;
+  content: "";
+  inset: 1.3em 1.6em auto auto;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  rotate: 45deg;
+  pointer-events: none;
+  transition: 0.4s;
+}
+textarea {
+  resize: none;
+}
+.lead {
+  margin: max(5vw, 50px) auto;
+  width: min(100%, 550px);
+  line-height: 1.8;
+}
+.agree {
+  display: flex;
+  align-items: start;
+  gap: 1em;
+}
+.agree > p {
+  line-height: 1.6;
+  padding-top: 0.2em;
+}
+.check-box {
+  position: relative;
+}
+.check-box::before {
+  pointer-events: none;
+  position: absolute;
+  content: "";
+  inset: 0;
+  margin: auto;
+  width: 0.8em;
+  height: 0.4em;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+  rotate: -45deg;
+  opacity: 0;
+  scale: 0.3;
+}
+.check-box:has(input:checked)::before {
+  animation: check-bounce 0.5s ease-in forwards;
+}
+@keyframes check-bounce {
+  50% {
+    scale: 1.3;
+    opacity: 1;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+.agree a {
+  border-bottom: 1px solid;
+  transition: 0.4s;
+}
+.agree a:hover {
+  opacity: 0.6;
+}
+input[type="checkbox"] {
+  width: 2em;
+  height: 2em;
+  padding: 0;
+  display: inline-block;
+}
+.conf_form button,
+input[type="submit"],
+.complete-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 2.6em auto 0;
+  font-size: 1.2rem;
+  padding-inline: 1.4em;
+  height: 3em;
+  border-radius: 1.6em;
+  width: fit-content;
+  font-weight: 500;
+  color: #333;
+  background-color: #eee;
+  border: 1px solid #eee;
+  box-shadow: var(--shadow);
+  transition: 0.4s;
+}
+input[type="submit"][disabled] {
+  opacity: 0.2;
+}
+.conf_form button:hover,
+.btn-wrapper:not(:has([disabled])):hover input,
+.complete-link:hover {
+  background-color: transparent;
+  border-color: #eee;
+  color: #eee;
+}
+.conf_form button {
+  background-color: transparent;
+  color: #eee;
+  &:hover {
+    background-color: #eee;
+    color: #333;
+  }
+}
+
+input[type="submit"] {
+  padding-left: calc(1.4em + 0.72rem + 34px);
+}
+.btn-wrapper {
+  position: relative;
+  width: fit-content;
+  margin-inline: auto;
+  transition: 0.4s;
+  border-radius: calc(1.2em * 1.6);
+}
+.btn-wrapper span {
+  position: absolute;
+  height: fit-content;
+  inset: 0 auto 0 1.4rem;
+  color: #333;
+  margin-block: auto;
+  pointer-events: none;
+  transition: 0.4s;
+}
+.btn-wrapper:not(:has([disabled])):hover span {
+  color: #eee;
+}
+.btn-wrapper span,
+.complete-link span,
+.conf_form button span {
+  font-size: 34px;
+  font-variation-settings: "wght" 300;
+}
+[name="contact-form"] .btn-wrapper {
+  translate: calc((var(--f-sz) * 4 + 5vw) / 2);
+}
+.error-text,
+.error-text-mail {
+  color: var(--red-c);
+  margin-top: 0.6em;
+  display: none;
+}
+.label:has(.is-error) .error-text,
+.label:has(.is-error-mail) .error-text-mail {
+  display: block;
+}
+
+/* ========== conf-form ========== */
+
+.container:has(.conf_form) {
+  padding-top: max(5vw, 30px);
+}
+.conf_form .progress,
+.complete-box .progress {
+  margin-top: max(5vw, 50px);
+}
+
+.conf_wrap {
+  width: min(100%, 500px);
+  padding-block: 1.8em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-inline: auto;
+}
+.conf_label {
+  font-weight: 500;
+  color: #777;
+  margin-bottom: 0.4em;
+  display: block;
+}
+.button_wrap {
+  display: flex;
+  width: min(100%, 500px);
+  justify-content: space-between;
+  margin-inline: auto;
+}
+.button_wrap button,
+.button_wrap input[type="submit"] {
+  margin-top: 0;
+}
+.conf-lead {
+  margin-block: 2em;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ========== complete-box ========== */
+
+.container:has(.complete-box) {
+  padding-block: max(8vw, 50px) max(8vw, 3rem);
+}
+.complete-box {
+  text-align: center;
+  flex: 1;
+}
+.complete-box h2 {
+  font-size: max(1.6vw, 1.2em);
+  font-weight: 500;
+  color: var(--primary-c);
+  margin-bottom: max(3vw, 30px);
+}
+.complete-box h2 span {
+  display: block;
+  font-size: 80px;
+  margin-bottom: 10px;
+  font-variation-settings: "wght" 300;
+}
+.complete-text {
+  width: min(100%, 500px);
+  line-height: 1.8;
+  margin: 0 auto max(3vw, 30px);
+}
+
+.error {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  font-size: 1.4em;
+  color: var(--red-c);
+  border: 1px solid;
+  padding: 1em 2em;
+  width: fit-content;
+  margin: max(5vw, 50px) auto;
+}
+.error span {
+  font-size: 1.4em;
+}
+
+@media (width < 768px) {
+  .container {
+    flex-direction: column;
+    gap: 50px;
+  }
+  .lead {
+    padding-inline: 5vw;
+  }
+  .progress {
+    position: static;
+    order: 0;
+    flex-direction: row;
+    width: 100%;
+    gap: 8px;
+    &.in-conf {
+      margin-top: 50px;
+    }
+    li {
+      padding-top: 2em;
+      flex: 1;
+      &::after {
+        inset: 0 0 auto;
+        width: auto;
+        height: 3px;
+      }
+    }
+  }
+  .contact {
+    font-size: 0.9em;
+  }
+  .input-area {
+    font-size: 1rem;
+    gap: 0.8em;
+    flex-direction: column;
+    ~ .input-area {
+      margin-top: 1.6em;
+    }
+  }
+  .required {
+    margin-top: 0;
+  }
+  .error-text {
+    font-size: 14px;
+  }
+  .conf_form button,
+  input[type="submit"],
+  .complete-link {
+    font-size: 1rem;
+  }
+  .btn-wrapper span,
+  .complete-link span,
+  .conf_form button span {
+    font-size: 28px;
+  }
+  input[type="submit"] {
+    padding-left: calc(1.4em + 0.72rem + 28px);
+  }
+  [name="contact-form"] .btn-wrapper {
+    translate: 0;
+  }
+
+  .conf_form,
+  .complete-box {
+    padding-top: 0;
+  }
+  .conf_wrap {
+    padding-block: 1.2em;
+  }
+}

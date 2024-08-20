@@ -1,0 +1,105 @@
+@import url(lower.css);
+
+
+.document {
+  padding: max(5vw, 50px) 5vw;
+  width: min(100%, 900px);
+  margin-inline: auto;
+}
+.document h2 {
+  text-align: center;
+  font-size: max(1.8vw, 1.3em);
+  font-weight: normal;
+  margin-bottom: 1.4em;
+}
+
+.main {
+  margin-top: 2em;
+  line-height: 1.6;
+  counter-reset: num 0;
+  > li {
+    counter-increment: num 1;
+  }
+}
+.main > li ~ li {
+  margin-top: 2em;
+}
+h3 {
+  font-size: max(1.4vw, 1.1em);
+  font-weight: 500;
+  border-bottom: 1px solid;
+  padding-bottom: 0.2em;
+  margin-bottom: 1em;
+  display: flex;
+  gap: 0.4em;
+}
+.sub {
+  counter-reset: num-sub 0;
+  > li {
+    counter-increment: num-sub 1;
+  }
+}
+.sub,
+dl {
+  margin-top: 1em;
+}
+.sub li {
+  position: relative;
+  padding-left: 1.4em;
+  display: flex;
+  &::before {
+    content: counter(num-sub) "）";
+    width: 1.8em;
+  }
+}
+h3::before {
+  content: counter(num) ".";
+}
+.column {
+  display: flex;
+}
+dt {
+  width: 60px;
+  font-weight: normal;
+}
+dd {
+  flex: 1;
+  padding-left: 0.8em;
+  display: flex;
+  gap: 0.6em;
+}
+dd::before {
+  content: ":";
+}
+@media (width < 1024px) {
+  .tb {
+    display: block;
+  }
+}
+@media (width < 768px) {
+  .fv {
+    height: 260px;
+    h1 {
+      letter-spacing: normal;
+      font-size: min(9.9vw, 50px);
+    }
+  }
+  .document {
+    font-size: 0.9em;
+  }
+  .column {
+    flex-direction: column;
+  }
+  .column ~ .column {
+    margin-top: 0.6em;
+  }
+  dt {
+    font-weight: 500;
+  }
+  dd {
+    padding: 0;
+  }
+  dd::before {
+    display: none;
+  }
+}

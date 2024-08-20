@@ -1,0 +1,216 @@
+@import url(common.css);
+
+.hero {
+  height: 36vw;
+  display: grid;
+  place-items: end start;
+  position: relative;
+
+  img {
+    object-fit: cover;
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 70vw;
+    height: 100%;
+  }
+
+  &::before {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 70vw;
+    content: "";
+    background: linear-gradient(to right, #000, rgb(0 0 0/0.2) 40%);
+    z-index: 1;
+  }
+
+  h1 {
+    color: transparent;
+    font-size: max(3vw, 2em);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background-image: linear-gradient(
+      to right,
+      #fff,
+      var(--primary-c) 30%,
+      rgb(88, 71, 0) 50%,
+      var(--primary-c) 70%,
+      #000000 80%
+    );
+    line-height: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    background-size: 500% 100%;
+    background-repeat: no-repeat;
+    display: inline-block;
+    background-position: right;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shining 2s .8s forwards;
+    position: relative;
+    margin-bottom: 1.8rem;
+
+    &::after {
+      position: absolute;
+      content: attr(data-ja);
+      letter-spacing: normal;
+      color: #fff;
+      font-size: 1rem;
+      display: block;
+      padding-top: 0.8em;
+      opacity: 0.6;
+    }
+  }
+
+  &.ver2 {
+    height: max(24vw, 240px);
+    padding-bottom: 0;
+    &::before {
+      display: none;
+    }
+  }
+}
+@keyframes shining {
+  100% {
+    background-position: left;
+  }
+}
+
+.lead {
+  line-height: 1.8;
+}
+
+.application-link {
+  margin: 3rem auto 0;
+  display: block;
+  width: fit-content;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 1em 3em;
+  background-color: #222;
+  transition-property: border-color, background-color;
+  transition-duration: 0.5s;
+  &:hover {
+    border-color: #888;
+    background-color: transparent;
+  }
+}
+
+@media (width < 1024px) {
+  .hero {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-top: 0;
+    position: relative;
+    img {
+      position: static;
+      width: 100vw;
+      height: auto;
+      aspect-ratio: 8/5;
+      margin-left: -5vw;
+    }
+    &::before {
+      width: 100%;
+      height: calc(100vw * 5 / 8);
+      background: linear-gradient(0deg, #000, rgb(0 0 0/0.2) 10%);
+    }
+    h1 {
+      order: 1;
+      margin-top: max(5vw, 50px);
+    }
+    &.ver2  {
+      height: auto;
+      h1 {
+        margin-top: 160px;
+      }
+    }
+  }
+}
+
+.pagination {
+  padding: 0 5vw max(8vw, 60px);
+  .inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+    font-size: 2em;
+    font-weight: 300;
+  }
+  .current {
+    background-color: #444;
+  }
+  .material-symbols-outlined {
+    font-size: 50px;
+    font-variation-settings: "wght" 200;
+    vertical-align: sub;
+  }
+}
+
+.page-numbers {
+  width: min(100%, 80px);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+a.page-numbers {
+  transition: 0.5s;
+  perspective: 800px;
+  &::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+    border-radius: 50%;
+    background-color: var(--primary-c);
+    filter: blur(20px);
+    opacity: 0;
+    z-index: -2;
+    transition: 0.5s;
+  }
+  &::after {
+    position: absolute;
+    content: "";
+    inset: 5% 65% 80% 0%;
+    border-radius: 50%;
+    background-color: #fff;
+    filter: blur(4px);
+    rotate: -45deg;
+    transform-origin: top right;
+    opacity: 0;
+    z-index: -1;
+    transition: 0.5s;
+  }
+  &:hover {
+    translate: 0 -10px;
+    box-shadow: -3px -3px 14px -2px var(--primary-c) inset;
+    &::before {
+      opacity: 0.6;
+      translate: 0 30px;
+      scale: 0.5;
+      transform-origin: bottom;
+      transform: rotate3d(1, 0, 0, -60deg);
+    }
+    &::after {
+      opacity: 0.3;
+    }
+  }
+}
+
+@media (width < 768px) {
+  .hero h1 {
+    animation-delay: .4s;
+  }
+  .pagination {
+    .inner {
+      font-size: 1.5em;
+    }
+    .material-symbols-outlined {
+      font-size: 38px;
+    }
+  }
+  .page-numbers {
+    width: min(100%, 60px);
+  }
+}

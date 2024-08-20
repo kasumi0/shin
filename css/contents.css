@@ -1,0 +1,268 @@
+@import url(lower.css);
+
+.hero {
+  padding-bottom: 0;
+}
+.layout {
+  display: flex;
+  gap: 1em;
+  --nav-w: max(20%);
+  nav {
+    padding: 0 0 max(5vw, 50px) max(3vw, 1em);
+    position: sticky;
+    height: 100vh;
+    top: 0;
+    display: grid;
+    place-items: end start;
+    width: var(--nav-w);
+    li {
+      transition: color 0.4s;
+      &.current {
+        color: var(--primary-c);
+      }
+    }
+    a {
+      display: block;
+      padding-block: 0.4em;
+      &::before {
+        content: "";
+        inset: 0 auto 0 0;
+        margin-block: auto;
+        height: 1px;
+        width: 0px;
+        background-color: currentColor;
+        transition: width 0.2s, margin 0.2s;
+      }
+      &:hover::before {
+        width: 1em;
+        margin-right: 0.4em;
+      }
+      span {
+        display: inline-block;
+      }
+    }
+  }
+  .main {
+    flex: 1;
+    section {
+      padding-left: 0;
+    }
+  }
+}
+section {
+  display: flex;
+  flex-direction: column;
+  gap: max(3vw, 30px);
+  h2:where(:not(.contact h2)) {
+    background-color: var(--dark-c);
+    margin-right: -5vw;
+    padding: 0.4em 0.8em;
+    font-size: max(2vw, 1.2em);
+    font-weight: 500;
+    margin-bottom: 0;
+    border-radius: 6px 0 0 6px;
+  }
+  h3 {
+    font: normal max(3vw, 1.3em) / 1.6 var(--serif);
+  }
+  .body {
+    width: min(100%, 500px);
+    margin-left: auto;
+    line-height: 1.8;
+  }
+  .original {
+    margin-top: 1em;
+    padding: 1em 1.6em;
+    background: linear-gradient(
+      90deg,
+      rgb(255 255 255/0.08),
+      rgb(255 255 255/0.25)
+    );
+    border-radius: 6px;
+    h4 {
+      font-weight: 500;
+      margin-bottom: 0.4em;
+      color: var(--bg-c);
+    }
+    li {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      &::before {
+        content: "";
+        width: 0.8em;
+        aspect-ratio: 1;
+        border: 1px solid;
+      }
+      ~ li {
+        margin-top: 0.4em;
+      }
+    }
+  }
+  dl {
+    width: min(100%, 640px);
+    margin-inline: auto;
+  }
+  .row {
+    display: flex;
+    padding-block: 1em;
+    border-bottom: 1px solid rgb(255 255 255/0.2);
+    line-height: 1.6;
+  }
+  dt {
+    font-weight: normal;
+    width: 120px;
+  }
+  dd {
+    flex: 1;
+  }
+  > img {
+    width: 100%;
+    aspect-ratio: 8/5;
+    object-fit: cover;
+  }
+}
+.try {
+  width: fit-content;
+  margin-left: auto;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  color: var(--primary-c);
+  gap: 0.4em;
+  position: relative;
+  transition: color .5s;
+  > * {
+    position: relative;
+  }
+  i {
+    font-size: 24px;
+  }
+  /* &::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+    background: linear-gradient(120deg, var(--primary-c), var(--dark-c));
+    opacity: 0;
+    transition: opacity 0.5s;
+  } */
+  &:hover {
+    color: #fff;
+    border-color: transparent;
+    /* &::before {
+      opacity: 1;
+    } */
+  }
+}
+
+.link-btn {
+  margin: 1em 0 1em auto;
+}
+
+.other {
+  display: flex;
+  align-items: center;
+  padding: 0 5vw max(5vw, 50px);
+  .lead {
+    width: 50%;
+    line-height: 1.8;
+  }
+  a {
+    width: fit-content;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    opacity: 0.6;
+    padding: 1em;
+    border: 1px solid;
+    border-radius: 6px;
+    transition: opacity 0.4s;
+    &:hover {
+      opacity: 1;
+    }
+    span {
+      font-variation-settings: "wght" 300;
+    }
+  }
+}
+
+.live > img {
+  object-position: top;
+}
+
+.contact {
+  margin: 0;
+}
+
+@media (width < 1024px) {
+  .other {
+    padding-inline: 0;
+  }
+}
+
+@media (width < 768px) {
+  .layout {
+    flex-direction: column;
+    nav {
+      position: static;
+      height: auto;
+      width: auto;
+      padding: 50px 5vw;
+      .local-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8em 0.4em;
+      }
+      li {
+        font-size: 12.2px;
+        border-radius: 4px;
+        background-color: #333;
+        padding: 0.1em 1em;
+        &.current {
+          color: unset;
+        }
+      }
+    }
+    .main section {
+      padding-left: 5vw;
+    }
+  }
+  section {
+    padding-top: 0;
+    h3 {
+      text-align: right;
+    }
+    > img {
+      width: 100vw;
+      margin-left: -5vw;
+    }
+    .row {
+      flex-direction: column;
+      border-bottom: none;
+      gap: 0.6em;
+      padding-block: 0.7em;
+    }
+    dt {
+      width: fit-content;
+      background-color: #333;
+      padding: 0.1em 0.6em;
+      border-radius: 4px;
+      color: #bbb;
+    }
+    .original {
+      padding-inline: 1em;
+    }
+  }
+  .try span {
+    display: none;
+  }
+  .other {
+    padding-inline: 5vw;
+    flex-direction: column;
+    gap: 20px;
+    .lead {
+      width: 100%;
+    }
+  }
+}
