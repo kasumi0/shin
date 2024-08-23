@@ -71,7 +71,7 @@ if (!empty($clean['btn_confirm'])) {
     $admin_reply_text .= "お名前：" . $clean['your-name'] . "\n";
     $admin_reply_text .= "メールアドレス：" . $clean['email'] . "\n";
     $admin_reply_text .= "電話番号：" . $clean['phone'] . "\n";
-    $admin_reply_text .= "お問い合わせ種別：" . $clean['content-type'];
+    $admin_reply_text .= "お問い合わせ種別：" . $clean['content-type'] . "\n";
     $admin_reply_text .= "お問い合わせ内容：" . $clean['content'];
 
     // 管理者へメール送信

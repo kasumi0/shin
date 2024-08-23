@@ -207,74 +207,80 @@ smoothToggle();
 
 // 中心からランダムな上方向に画像が飛び出るアニメーション
 
-const popBtn = document.querySelector(".contact-btn");
-const popArea = document.querySelector(".pop-area");
-const url = popArea.dataset.url
-const popAreaH = popArea.offsetHeight;
-const popItem = document.querySelector(".pop-item");
-const rand = (min, max) => Math.floor(Math.random() * (max - min) + min);
-const num = 2;
+const popAnime = () => {
+  const popBtn = document.querySelector(".contact-btn");
+  if (!popBtn) return
 
-for (let i = 0; i < num; i++) {
-  const clone = popItem.cloneNode(true);
-  popArea.appendChild(clone);
+  const popArea = document.querySelector(".pop-area");
+  const url = popArea.dataset.url
+  const popAreaH = popArea.offsetHeight;
+  const popItem = document.querySelector(".pop-item");
+  const rand = (min, max) => Math.floor(Math.random() * (max - min) + min);
+  const num = 2;
+  
+  for (let i = 0; i < num; i++) {
+    const clone = popItem.cloneNode(true);
+    popArea.appendChild(clone);
+  }
+  
+  const playAnime = () => {
+    const items = document.querySelectorAll(".pop-item");
+  
+    items.forEach((item) => {
+      const itemW = rand(10, 20);
+      item.style.width = `${itemW}%`;
+      const itemH = item.offsetHeight;
+      const child = item.firstElementChild;
+      const gChild = child.firstElementChild;
+      gChild.style.background = `url(${url}/img/contact.svg) center/contain no-repeat`;
+  
+      const xBegin = (100 / itemW - 1) * 50;
+      const xEnd = rand(0, 100 / itemW - 1) * 100;
+  
+      const yBottom = (popAreaH / itemH) * 100;
+      const yTop = rand(1, popAreaH / itemH - 1) * 100;
+  
+      const rBegin = 0;
+      const rEnd = -(xBegin - xEnd) * 1;
+  
+      const durationTime = (1 - (yTop / yBottom) ** 2) * 3000;
+      const delayTime = rand(0, 1000);
+  
+      const options = {
+        duration: durationTime,
+        delay: delayTime,
+        fill: "forwards",
+      };
+  
+      item.animate(
+        [
+          { translate: `${xBegin}%`, opacity: 1 },
+          { opacity: 1 },
+          { translate: `${xEnd}%`, opacity: 0 },
+        ],
+        options
+      );
+  
+      child.animate(
+        [
+          {
+            translate: `0 ${yBottom}%`,
+            easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+          },
+          { translate: `0 ${yTop}%`, easing: "cubic-bezier(0.32, 0, 0.67, 0)" },
+          { translate: `0 ${yBottom}%` },
+        ],
+        options
+      );
+  
+      gChild.animate({ rotate: [`${rBegin}deg`, `${rEnd}deg`] }, options);
+    });
+  };
+  
+  popBtn.addEventListener("mouseover", playAnime);
 }
+popAnime()
 
-const playAnime = () => {
-  const items = document.querySelectorAll(".pop-item");
-
-  items.forEach((item) => {
-    const itemW = rand(10, 20);
-    item.style.width = `${itemW}%`;
-    const itemH = item.offsetHeight;
-    const child = item.firstElementChild;
-    const gChild = child.firstElementChild;
-    gChild.style.background = `url(${url}/img/contact.svg) center/contain no-repeat`;
-
-    const xBegin = (100 / itemW - 1) * 50;
-    const xEnd = rand(0, 100 / itemW - 1) * 100;
-
-    const yBottom = (popAreaH / itemH) * 100;
-    const yTop = rand(1, popAreaH / itemH - 1) * 100;
-
-    const rBegin = 0;
-    const rEnd = -(xBegin - xEnd) * 1;
-
-    const durationTime = (1 - (yTop / yBottom) ** 2) * 3000;
-    const delayTime = rand(0, 1000);
-
-    const options = {
-      duration: durationTime,
-      delay: delayTime,
-      fill: "forwards",
-    };
-
-    item.animate(
-      [
-        { translate: `${xBegin}%`, opacity: 1 },
-        { opacity: 1 },
-        { translate: `${xEnd}%`, opacity: 0 },
-      ],
-      options
-    );
-
-    child.animate(
-      [
-        {
-          translate: `0 ${yBottom}%`,
-          easing: "cubic-bezier(0.33, 1, 0.68, 1)",
-        },
-        { translate: `0 ${yTop}%`, easing: "cubic-bezier(0.32, 0, 0.67, 0)" },
-        { translate: `0 ${yBottom}%` },
-      ],
-      options
-    );
-
-    gChild.animate({ rotate: [`${rBegin}deg`, `${rEnd}deg`] }, options);
-  });
-};
-
-popBtn.addEventListener("mouseover", playAnime);
 
 const validateForm = () => {
   const form = document.querySelectorAll(".has-value");

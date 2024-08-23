@@ -164,6 +164,9 @@ legend .required {
   pointer-events: none;
   transition: 0.4s;
 }
+option {
+  color: #333;
+}
 textarea {
   resize: none;
 }
