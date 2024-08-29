@@ -519,9 +519,6 @@ li:nth-child(even).show .img-box::before {
       height: 50vh;
     }
   }
-  .parallax-bg {
-    overflow: hidden;
-  }
 
   .contents {
     h3 {

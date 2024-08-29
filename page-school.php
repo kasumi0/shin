@@ -54,7 +54,6 @@
           <ul class="name">
             <li>塩崎 智由（代表）</li>
             <li>永田 香織</li>
-            <li>野村 真由</li>
           </ul>
         </div>
         <a href="<?= esc_url(home_url('/about/')); ?>#member" class="link-btn">

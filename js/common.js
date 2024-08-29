@@ -122,7 +122,7 @@ const parallax = (parent, targets, distance, type) => {
     if (type) {
       const scroll = $areas[0].getBoundingClientRect().top;
       const position = scroll - windowHeight;
-      const ratio = windowHeight / $areas[0].clientHeight;
+      const ratio = 1 - $areas[0].clientHeight / windowHeight;
       if (position > 0) return;
       $targets.forEach((target) => {
         target.style.translate = `0 ${-position * distance * ratio}px`;
@@ -142,10 +142,10 @@ const parallax = (parent, targets, distance, type) => {
 };
 
 parallax(".parallax-area", ".parallax", 0.06);
-parallax(".parallax-bg", ".far0", -0.4, true);
-parallax(".parallax-bg", ".far1", -0.7, true);
-parallax(".parallax-bg", ".far2", -1, true);
-parallax(".parallax-bg", ".far3", -1.3, true);
+parallax(".parallax-bg", ".far0", .008, true);
+parallax(".parallax-bg", ".far1", .016, true);
+parallax(".parallax-bg", ".far2", .024, true);
+parallax(".parallax-bg", ".far3", .032, true);
 
 const doSlick = (selector) => {
   const mySlick = document.querySelector(selector);
