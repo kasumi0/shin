@@ -355,6 +355,7 @@ footer a:hover {
   flex-direction: row;
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   padding-block: max(8vw, 60px);
   gap: 2em 8%;
   justify-content: center;
