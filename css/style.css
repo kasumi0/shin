@@ -424,6 +424,10 @@ li:nth-child(even).show .img-box::before {
     margin-bottom: 0.4em;
     font-size: max(1.4vw, 1.1em);
     font-weight: 500;
+    padding-right: 2rem;
+  }
+  p {
+    padding-right: 2rem;
   }
 }
 
