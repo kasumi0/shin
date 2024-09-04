@@ -157,8 +157,8 @@ const doSlick = (selector) => {
     cssEase: "linear",
     slidesToShow: 2.5,
     pauseOnHover: false,
-    infinite: true,
-
+    pauseOnFocus: false,
+    arrows: false,
     responsive: [
       {
         breakpoint: 750,

@@ -35,15 +35,15 @@
     </section>
 
     <div class="slick-infinite">
-      <img src="<?= get_template_directory_uri(); ?>/img/school/4.jpg.webp" alt="">
-      <img src="<?= get_template_directory_uri(); ?>/img/school/5.jpg.webp" alt="">
-      <img src="<?= get_template_directory_uri(); ?>/img/school/6.jpg.webp" alt="">
-      <img src="<?= get_template_directory_uri(); ?>/img/school/8.jpg.webp" alt="">
-      <img src="<?= get_template_directory_uri(); ?>/img/school/9.jpg.webp" alt="">
-      <img src="<?= get_template_directory_uri(); ?>/img/school/10.jpg.webp" alt="">
-      <img src="<?= get_template_directory_uri(); ?>/img/school/11.jpg.webp" alt="">
-      <img src="<?= get_template_directory_uri(); ?>/img/school/12.jpg.webp" alt="">
-      <img src="<?= get_template_directory_uri(); ?>/img/school/13.jpg.webp" alt="">
+      <img src="<?= get_template_directory_uri(); ?>/img/school/4.jpg.webp" alt="" class="skip-lazy">
+      <img src="<?= get_template_directory_uri(); ?>/img/school/5.jpg.webp" alt="" class="skip-lazy">
+      <img src="<?= get_template_directory_uri(); ?>/img/school/6.jpg.webp" alt="" class="skip-lazy">
+      <img src="<?= get_template_directory_uri(); ?>/img/school/8.jpg.webp" alt="" class="skip-lazy">
+      <img src="<?= get_template_directory_uri(); ?>/img/school/9.jpg.webp" alt="" class="skip-lazy">
+      <img src="<?= get_template_directory_uri(); ?>/img/school/10.jpg.webp" alt="" class="skip-lazy">
+      <img src="<?= get_template_directory_uri(); ?>/img/school/11.jpg.webp" alt="" class="skip-lazy">
+      <img src="<?= get_template_directory_uri(); ?>/img/school/12.jpg.webp" alt="" class="skip-lazy">
+      <img src="<?= get_template_directory_uri(); ?>/img/school/13.jpg.webp" alt="" class="skip-lazy">
     </div>
 
     <section class="instructor">
