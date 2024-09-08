@@ -15,7 +15,7 @@
 }
 .hero video {
   grid-area: 1/-1/1/-1;
-  height: 100dvh;
+  height: 100lvh;
   width: 100vw;
   object-fit: contain;
 }
@@ -97,7 +97,7 @@
 /* ========== parallax-bg ========== */
 
 .bg {
-  height: 100dvh;
+  height: 100lvh;
   position: sticky;
   top: 0;
   overflow: hidden;
@@ -144,7 +144,7 @@
 /* ========== contents ========== */
 
 .contents {
-  margin-top: -100dvh;
+  margin-top: -100lvh;
 }
 .contents h2 {
   text-align: right;
@@ -521,7 +521,7 @@ li:nth-child(even).show .img-box::before {
     }
     h2,
     .hero-logo {
-      height: 50vh;
+      height: 50lvh;
     }
   }
 
