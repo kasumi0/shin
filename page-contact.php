@@ -2,21 +2,17 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-// WordPress標準のPHPMailerをロード
 if (!class_exists('PHPMailer\\PHPMailer\\PHPMailer')) {
   require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
   require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
   require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
 }
 
-// 変数の初期化
 $page_flag = 0;
 $clean = array();
 $error = array();
 $labels = ['お名前', 'メールアドレス', '電話番号', 'お問い合わせ種別', 'お問い合わせ内容'];
 
-// サニタイズ
 if (!empty($_POST)) {
   foreach ($_POST as $key => $value) {
     $clean[$key] = htmlspecialchars($value, ENT_QUOTES);
@@ -24,11 +20,8 @@ if (!empty($_POST)) {
 }
 
 if (!empty($clean['btn_confirm'])) {
-
   $page_flag = 1;
 } elseif (isset($_POST["recaptchaResponse"]) && !empty($_POST["recaptchaResponse"])) {
-
-  // ここにシークレットキーを入れて下さい
   $secret_key = "6LdPBysqAAAAAI0ugM9FrCHF03WXthP1jogw5nB-";
   $verifyResponse = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret_key}&response={$_POST['recaptchaResponse']}");
   $reCAPTCHA = json_decode($verifyResponse);
@@ -45,20 +38,13 @@ if (!empty($clean['btn_confirm'])) {
       $mail->SMTPAuth = true;
       $mail->Username = 'contact@wadaiko-shin.com';
       $mail->Password = 'wadaiko-shin0606';
-      $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // SSL
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
       $mail->Port = 465;
-
-      $mail->CharSet = 'UTF-8'; // ← 文字化け防止の追加設定
-      $mail->Encoding = 'base64'; // ← エンコーディング指定
-
-      // 送信元
+      $mail->CharSet = 'UTF-8';
+      $mail->Encoding = 'base64';
       $mail->setFrom('contact@wadaiko-shin.com', '和太鼓衆SHIN');
-
-      // 宛先
-      $mail->addAddress($clean['email']); // ユーザー
-      $mail->addBCC('info.wadaiko.shin@gmail.com'); // 管理者
-
-      // 件名と本文
+      $mail->addAddress($clean['email']);
+      $mail->addBCC('info.wadaiko.shin@gmail.com');
       $mail->Subject = 'お問い合わせありがとうございます';
       $mail->Body = "この度は、お問い合わせ頂き誠にありがとうございます。\n\n";
 
@@ -70,13 +56,9 @@ if (!empty($clean['btn_confirm'])) {
         }
       }
 
-      // メール送信実行
       $mail->send();
-
-      // 成功時：完了画面へ
       $page_flag = 2;
     } catch (Exception $e) {
-      // 失敗時：認証エラーと同じフローでエラーページへ
       error_log("PHPMailerエラー: " . $mail->ErrorInfo);
       $page_flag = 3;
     }
