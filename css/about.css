@@ -100,9 +100,7 @@
   display: flex;
   gap: 5%;
   width: 79%;
-  &.right {
-    margin-left: auto;
-  }
+  margin-inline: auto;
   .modal-open {
     width: 100%;
     gap: max(3vw, 1.6em);

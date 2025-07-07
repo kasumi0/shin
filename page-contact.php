@@ -1,8 +1,20 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// WordPress標準のPHPMailerをロード
+if (!class_exists('PHPMailer\\PHPMailer\\PHPMailer')) {
+  require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+  require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+  require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+}
+
 // 変数の初期化
 $page_flag = 0;
 $clean = array();
 $error = array();
+$labels = ['お名前', 'メールアドレス', '電話番号', 'お問い合わせ種別', 'お問い合わせ内容'];
 
 // サニタイズ
 if (!empty($_POST)) {
@@ -18,64 +30,56 @@ if (!empty($clean['btn_confirm'])) {
 
   // ここにシークレットキーを入れて下さい
   $secret_key = "6LdPBysqAAAAAI0ugM9FrCHF03WXthP1jogw5nB-";
-  $verifyResponse = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret_key}&response=$_POST[recaptchaResponse]");
+  $verifyResponse = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret_key}&response={$_POST['recaptchaResponse']}");
   $reCAPTCHA = json_decode($verifyResponse);
   if (!$reCAPTCHA->success) {
     $page_flag = 3;
   } else {
     $page_flag = 2;
 
-    // 変数とタイムゾーンを初期化
-    $header = null;
-    $auto_reply_subject = null;
-    $auto_reply_text = null;
-    $admin_reply_subject = null;
-    $admin_reply_text = null;
+    // PHPMailer設定
+    $mail = new PHPMailer(true);
+    try {
+      $mail->isSMTP();
+      $mail->Host = 'mail1025.onamae.ne.jp';
+      $mail->SMTPAuth = true;
+      $mail->Username = 'contact@wadaiko-shin.com';
+      $mail->Password = 'wadaiko-shin0606';
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // SSL
+      $mail->Port = 465;
 
-    // 運営側へ送るメール
-    $to = "info.wadaiko.shin@gmail.com";
+      $mail->CharSet = 'UTF-8'; // ← 文字化け防止の追加設定
+      $mail->Encoding = 'base64'; // ← エンコーディング指定
 
-    date_default_timezone_set('Asia/Tokyo');
+      // 送信元
+      $mail->setFrom('contact@wadaiko-shin.com', '和太鼓衆SHIN');
 
-    mb_language("Japanese");
-    mb_internal_encoding("UTF-8");
+      // 宛先
+      $mail->addAddress($clean['email']); // ユーザー
+      $mail->addBCC('info.wadaiko.shin@gmail.com'); // 管理者
 
-    $header = "MIME-Version: 1.0\n";
-    $header .= "Content-Type: text/plain; charset=UTF-8\n";
-    $header .= "Content-Transfer-Encoding: base64\n";
-    $header .= "From:" . mb_encode_mimeheader('和太鼓衆SHIN', 'UTF-8') . "<$to>\n";
-    $header .= "Reply-To:" . mb_encode_mimeheader('和太鼓衆SHIN', 'UTF-8') . "<$to>\n";
+      // 件名と本文
+      $mail->Subject = 'お問い合わせありがとうございます';
+      $mail->Body = "この度は、お問い合わせ頂き誠にありがとうございます。\n\n";
 
-    // 件名を設定
-    $auto_reply_subject = 'お問い合わせありがとうございます。';
+      $i = 0;
+      foreach ($clean as $key => $value) {
+        if (!empty($value) && $key !== 'recaptchaResponse' && $key !== 'agree') {
+          $mail->Body .= (isset($labels[$i]) ? "{$labels[$i]}: " : "") . "$value\n";
+          $i++;
+        }
+      }
 
-    // 本文を設定
-    $auto_reply_text = "この度は、お問い合わせ頂き誠にありがとうございます。\n下記の内容でお問い合わせを受け付けました。\n\n";
-    $auto_reply_text .= "お問い合わせ日時：" . date("Y/m/d H:i") . "\n";
-    $auto_reply_text .= "お名前：" . $clean['your-name'] . "\n";
-    $auto_reply_text .= "メールアドレス：" . $clean['email'] . "\n";
-    $auto_reply_text .= "電話番号：" . $clean['phone'] . "\n";
-    $auto_reply_text .= "お問い合わせ種別：" . $clean['content-type'] . "\n";
-    $auto_reply_text .= "お問い合わせ内容：" . $clean['content'] . "\n";
-    $auto_reply_text .= "\n和太鼓衆SHIN";
+      // メール送信実行
+      $mail->send();
 
-    // 自動返信メール送信
-    mb_send_mail($clean['email'], $auto_reply_subject, $auto_reply_text, $header);
-
-    // 運営側へ送るメールの件名
-    $admin_reply_subject = 'お問い合わせを受け付けました。';
-
-    // 本文を設定
-    $admin_reply_text = "SHINオフィシャルサイトから下記の内容でお問い合わせがありました。\n\n";
-    $admin_reply_text .= "お問い合わせ日時：" . date("Y/m/d H:i") . "\n";
-    $admin_reply_text .= "お名前：" . $clean['your-name'] . "\n";
-    $admin_reply_text .= "メールアドレス：" . $clean['email'] . "\n";
-    $admin_reply_text .= "電話番号：" . $clean['phone'] . "\n";
-    $admin_reply_text .= "お問い合わせ種別：" . $clean['content-type'] . "\n";
-    $admin_reply_text .= "お問い合わせ内容：" . $clean['content'];
-
-    // 管理者へメール送信
-    mb_send_mail($to, $admin_reply_subject, $admin_reply_text, $header);
+      // 成功時：完了画面へ
+      $page_flag = 2;
+    } catch (Exception $e) {
+      // 失敗時：認証エラーと同じフローでエラーページへ
+      error_log("PHPMailerエラー: " . $mail->ErrorInfo);
+      $page_flag = 3;
+    }
   }
 }
 ?>
@@ -99,26 +103,23 @@ if (!empty($clean['btn_confirm'])) {
 
       <form class="conf_form" method="post" action="" id="inquiry">
         <input type="hidden" name="recaptchaResponse" id="recaptchaResponse">
-        <div class="conf_wrap">
-          <label class="conf_label">お名前</label>
-          <p class="conf_input"><?= $clean['your-name']; ?></p>
-        </div>
-        <div class="conf_wrap">
-          <label class="conf_label">メールアドレス</label>
-          <p class="conf_input"><?= $clean['email']; ?></p>
-        </div>
-        <div class="conf_wrap">
-          <label class="conf_label">電話番号</label>
-          <p class="conf_input"><?= $clean['phone']; ?></p>
-        </div>
-        <div class="conf_wrap">
-          <label class="conf_label">お問い合わせ種別</label>
-          <p class="conf_textarea"><?= $clean['content-type']; ?></p>
-        </div>
-        <div class="conf_wrap">
-          <label class="conf_label">お問い合わせ内容</label>
-          <p class="conf_textarea"><?= $clean['content']; ?></p>
-        </div>
+        <?php
+        $i = 0;
+        foreach ($clean as $key => $value):
+          if ($key !== 'btn_confirm'):
+        ?>
+            <?php if ($key !== 'agree' && !empty($value)): ?>
+              <div class="conf_wrap">
+                <label class="conf_label"><?= $labels[$i]; ?></label>
+                <p class="conf_textarea"><?= $value; ?></p>
+              </div>
+            <?php endif; ?>
+            <input type="hidden" name="<?= $key; ?>" value="<?= $value; ?>">
+        <?php
+            $i++;
+          endif;
+        endforeach;
+        ?>
 
         <p class="conf-lead">この内容で送信してもよろしいですか？</p>
 
@@ -136,18 +137,10 @@ if (!empty($clean['btn_confirm'])) {
             </span>
           </div>
         </div>
-        <input type="hidden" name="your-name" value="<?= $clean['your-name']; ?>">
-        <input type="hidden" name="email" value="<?= $clean['email']; ?>">
-        <input type="hidden" name="phone" value="<?= $clean['phone']; ?>">
-        <input type="hidden" name="content-type" value="<?= $clean['content-type']; ?>">
-        <input type="hidden" name="content" value="<?= $clean['content']; ?>">
-        <input type="hidden" name="agree" value="<?= $clean['agree']; ?>">
       </form>
     </div>
 
-  <?php
-  elseif ($page_flag === 3) :
-  ?>
+  <?php elseif ($page_flag === 3) : ?>
 
     <p class="error">
       <span class="material-symbols-outlined">
@@ -213,8 +206,8 @@ if (!empty($clean['btn_confirm'])) {
           <span class="required" data-validated="OK">必須</span>
           <div class="label">
             <input type="text" placeholder=" " name="your-name" value="<?= backVal('your-name'); ?>" class="has-value">
-            <span>お名前</span>
-            <p class="error-text">※お名前を入力してください。</p>
+            <span><?= $labels[0]; ?></span>
+            <p class="error-text">※<?= $labels[0]; ?>を入力してください。</p>
           </div>
         </div>
 
@@ -222,8 +215,8 @@ if (!empty($clean['btn_confirm'])) {
           <span class="required" data-validated="OK">必須</span>
           <div class="label">
             <input type="email" placeholder=" " name="email" value="<?= backVal('email'); ?>" class="has-value">
-            <span>メールアドレス</span>
-            <p class="error-text">※メールアドレスを入力してください。</p>
+            <span><?= $labels[1]; ?></span>
+            <p class="error-text">※<?= $labels[1]; ?>を入力してください。</p>
             <p class="error-text-mail">※正しい形式で入力してください。</p>
           </div>
         </div>
@@ -232,8 +225,8 @@ if (!empty($clean['btn_confirm'])) {
           <span class="required" data-validated="OK">必須</span>
           <div class="label">
             <input type="tel" inputmode="numeric" placeholder=" " name="phone" value="<?= backVal('phone'); ?>" class="has-value">
-            <span>電話番号</span>
-            <p class="error-text">※電話番号を半角数字10〜11桁（ハイフン有無どちらでも可）で入力してください。</p>
+            <span><?= $labels[2]; ?></span>
+            <p class="error-text">※<?= $labels[2]; ?>を半角数字10〜11桁（ハイフン有無どちらでも可）で入力してください。</p>
           </div>
         </div>
 
@@ -242,14 +235,15 @@ if (!empty($clean['btn_confirm'])) {
           <div class="label select-box">
             <select name="content-type" class="has-value">
               <option value="0">選択してください</option>
-              <option value="ご相談" <?= backVal('content-type', 'selected', 'ご相談'); ?>>ご相談</option>
-              <option value="演奏依頼" <?= backVal('content-type', 'selected', '演奏依頼'); ?>>演奏依頼</option>
-              <option value="楽曲提供依頼" <?= backVal('content-type', 'selected', '楽曲提供依頼'); ?>>楽曲提供依頼</option>
-              <option value="指導依頼" <?= backVal('content-type', 'selected', '指導依頼'); ?>>指導依頼</option>
-              <option value="その他" <?= backVal('content-type', 'selected', 'その他'); ?>>その他</option>
+              <?php
+              $options = ['ご相談', '演奏依頼', '楽曲提供依頼', '指導依頼', 'その他'];
+              foreach ($options as $o):
+              ?>
+                <option value="<?= $o ?>" <?= backVal('content-type', 'selected', $o); ?>><?= $o ?></option>
+              <?php endforeach; ?>
             </select>
-            <span>お問い合わせ種別</span>
-            <p class="error-text">※お問い合わせ種別を選択してください。</p>
+            <span><?= $labels[3]; ?></span>
+            <p class="error-text">※<?= $labels[3]; ?>を選択してください。</p>
           </div>
         </div>
 
@@ -257,8 +251,8 @@ if (!empty($clean['btn_confirm'])) {
           <span class="required" data-validated="OK">必須</span>
           <div class="label">
             <textarea name="content" rows="8" placeholder=" " class="has-value"><?= backVal('content'); ?></textarea>
-            <span>お問い合わせ内容</span>
-            <p class="error-text">※お問い合わせ内容を入力してください。</p>
+            <span><?= $labels[4]; ?></span>
+            <p class="error-text">※<?= $labels[4]; ?>を入力してください。</p>
           </div>
         </div>
 

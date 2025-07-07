@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex">
 
   <link rel="apple-touch-icon" sizes="180x180" href="<?= get_template_directory_uri(); ?>/img/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="<?= get_template_directory_uri(); ?>/img/favicon/favicon-32x32.png">
@@ -31,7 +30,6 @@
   <meta property="twitter:title" content="和太鼓衆SHIN" />
   <meta property="twitter:description" content="愛知県東三河を中心に活動する和太鼓衆SHINのオフィシャルサイト。和太鼓や和楽器、エレクトーンで独自の世界を音楽や舞台で表現しながら、和楽器の素晴らしさを世界に発信している。" />
   <meta property="twitter:image" content="https://kasumi-wmm.com/img/shin-ogp.jpg" />
-
 
   <title>
     <?php

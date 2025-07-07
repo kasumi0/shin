@@ -106,7 +106,7 @@
       </div>
     </div>
 
-    <div class="layout">
+    <!-- <div class="layout">
       <div class="modal-open">
         <div class="box">
           <img src="<?= get_template_directory_uri(); ?>/img/member/4.jpg.webp" alt="">
@@ -144,7 +144,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <dialog>
       <div class="container">
@@ -207,7 +207,7 @@
         </div>
       </div>
     </dialog>
-    <dialog>
+    <!-- <dialog>
       <div class="container">
         <span class="material-symbols-outlined modal-close">
           close
@@ -245,7 +245,7 @@
           </p>
         </div>
       </div>
-    </dialog>
+    </dialog> -->
 
   </section>
 
